@@ -1,3 +1,7 @@
+# iCEBreaker examples
+
+[![Join the chat at https://gitter.im/icebreaker-fpga/Lobby](https://badges.gitter.im/icebreaker-fpga/Lobby.svg)](https://gitter.im/icebreaker-fpga/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This repository contains examples for the iCEBreaker FPGA educational and development board.
 
 The goal of this repository is to provide simple examples that can serve as a starting point for the explaration of the iCEBreaker ecosystem. All examples are using the Yosys/Arachne-pnr/icestorm open source flow for ICE40 FPGA. No need for any signups and large downloads of proprietary toolchains necessary.
