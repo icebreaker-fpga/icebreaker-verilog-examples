@@ -2,3 +2,5 @@
 *.rpt
 *.blif
 *.asc
+*.json
+core
