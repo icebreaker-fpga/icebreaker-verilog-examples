@@ -28,17 +28,13 @@ module top (
 	output LEDG_N
 );
 
-wire clk_60mhz;
-//assign clk_60mhz = CLK;
-////SB_PLL40_CORE #(
+wire clk_42mhz;
+//assign clk_42mhz = CLK;
 SB_PLL40_PAD #(
   .DIVR(4'b0000),
-  // 60MHz
-  .DIVF(7'b1001111),
+  // 42MHz
+  .DIVF(7'b0110111),
   .DIVQ(3'b100),
-  // 81MHz
-  //.DIVF(7'b0110101),
-  //.DIVQ(3'b011),
   .FILTER_RANGE(3'b001),
   .FEEDBACK_PATH("SIMPLE"),
   .DELAY_ADJUSTMENT_MODE_FEEDBACK("FIXED"),
@@ -49,10 +45,8 @@ SB_PLL40_PAD #(
   .PLLOUT_SELECT("GENCLK"),
   .ENABLE_ICEGATE(1'b0)
 ) usb_pll_inst (
-  //.REFERENCECLK(pin_clk),
   .PACKAGEPIN(CLK),
-  .PLLOUTCORE(clk_60mhz),
-  .PLLOUTGLOBAL(),
+  .PLLOUTCORE(clk_42mhz),
   .EXTFEEDBACK(),
   .DYNAMICDELAY(),
   .RESETB(1'b1),
@@ -65,17 +59,17 @@ SB_PLL40_PAD #(
 );
 
 /* local parameters */
-//localparam clk_freq = 12000000; // 12MHz
-localparam clk_freq = 60000000; // 60MHz
-//localparam baud = 115200;
-localparam baud = 57600;
+//localparam clk_freq = 12_000_000; // 12MHz
+localparam clk_freq = 42_000_000; // 42MHz
+//localparam baud = 57600;
+localparam baud = 115200;
 
 
 /* instantiate the rx1 module */
 wire reg rx1_ready;
 wire reg [7:0] rx1_data;
 uart_rx #(clk_freq, baud) urx1 (
-	.clk(clk_60mhz),
+	.clk(clk_42mhz),
 	.rx(RX),
 	.rx_ready(rx1_ready),
 	.rx_data(rx1_data),
@@ -86,26 +80,53 @@ wire reg tx1_start;
 wire reg [7:0] tx1_data;
 wire reg tx1_busy;
 uart_tx #(clk_freq, baud) utx1 (
-	.clk(clk_60mhz),
+	.clk(clk_42mhz),
 	.tx_start(tx1_start),
 	.tx_data(tx1_data),
 	.tx(TX),
 	.tx_busy(tx1_busy)
 );
 
-//assign tx1_start = rx1_ready;
-//assign tx1_data = rx1_data;
+// Send the received data immediately back
 
-always @(posedge clk_60mhz) begin
-	if(rx1_ready) begin
-		tx1_data <= rx1_data;
-		tx1_start <= 1'b1;
-		LEDR_N <= ~rx1_data[0];
-		LEDG_N <= ~rx1_data[1];
-	end else
-		tx1_start <= 1'b0;
+wire reg [7:0] data_buf;
+wire reg data_flag = 0;
+wire reg data_check_busy = 0;
+always @(posedge clk_42mhz) begin
+
+  // we got a new data strobe
+  // let's save it and set a flag
+	if(rx1_ready && ~data_flag) begin
+    data_buf <= rx1_data;
+    data_flag <= 1;
+    data_check_busy <= 1;
+  end
+
+  // new data flag is set let's try to send it
+  if(data_flag) begin
+
+    // First check if the previous transmission is over
+    if(data_check_busy) begin
+      if(~tx1_busy) begin
+        data_check_busy <= 0;
+      end // if(~tx1_busy)
+
+    end else begin // try to send waiting for busy to go high to make sure
+      if(~tx1_busy) begin
+        tx1_data <= data_buf;
+        tx1_start <= 1'b1;
+        LEDR_N <= ~data_buf[0];
+        LEDG_N <= ~data_buf[1];
+      end else begin // Yey we did it!
+        tx1_start <= 1'b0;
+        data_flag <= 0;
+      end
+    end
+  end
 end
 
+// Loopback the TX and RX lines with no processing
+// Useful as a sanity check ;-)
 //assign TX = RX;
 
 endmodule
