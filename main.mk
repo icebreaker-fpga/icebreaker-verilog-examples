@@ -2,17 +2,17 @@
 all: $(PROJ).rpt $(PROJ).bin
 
 %.blif: %.v $(ADD_SRC) $(ADD_DEPS)
-	yosys -p 'synth_ice40 -top top -blif $@' $<
+	yosys -ql $*.log -p 'synth_ice40 -top top -blif $@' $<
 
 %.json: %.v $(ADD_SRC) $(ADD_DEPS)
-	yosys -p 'synth_ice40 -top top -json $@' $<
+	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $<
 
-ifeq ($(USE_NEXTPNR),)
-%.asc: $(PIN_DEF) %.blif
-	arachne-pnr -d $(subst up,,$(subst hx,,$(subst lp,,$(DEVICE)))) -o $@ -p $^
-else
+ifeq ($(USE_ARACHNEPNR),)
 %.asc: $(PIN_DEF) %.json
 	nextpnr-ice40 --$(DEVICE) --json $(filter-out $<,$^) --pcf $< --asc $@
+else
+%.asc: $(PIN_DEF) %.blif
+	arachne-pnr -d $(subst up,,$(subst hx,,$(subst lp,,$(DEVICE)))) -o $@ -p $^
 endif
 
 
