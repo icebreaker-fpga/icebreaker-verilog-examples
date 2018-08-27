@@ -1,10 +1,10 @@
 
 all: $(PROJ).rpt $(PROJ).bin
 
-%.blif: %.v
+%.blif: %.v $(ADD_SRC) $(ADD_DEPS)
 	yosys -p 'synth_ice40 -top top -blif $@' $<
 
-%.json: %.v
+%.json: %.v $(ADD_SRC) $(ADD_DEPS)
 	yosys -p 'synth_ice40 -top top -json $@' $<
 
 ifeq ($(USE_NEXTPNR),)
@@ -45,7 +45,7 @@ sudo-prog: $(PROJ).bin
 	sudo iceprog $<
 
 clean:
-	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json
+	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json $(ADD_CLEAN)
 
 .SECONDARY:
 .PHONY: all prog clean
