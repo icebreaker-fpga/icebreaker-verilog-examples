@@ -46,8 +46,8 @@ initial $readmemh("gamma_table.hex", gamma_lut);
 // We need two outputs as we can't just invert the gamma corrected PWM output,
 // as this would also invert the gamma curve.
 reg [15:0] pwm_counter = 0;
-reg [15:0] pwm_compare_0 = (1 << 15) / 2;
-reg [15:0] pwm_compare_1 = (1 << 15) / 2;
+reg [15:0] pwm_compare_0;
+reg [15:0] pwm_compare_1;
 reg pwm_out_0;
 reg pwm_out_1;
 always @(posedge CLK) begin
