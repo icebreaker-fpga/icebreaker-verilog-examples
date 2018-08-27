@@ -70,7 +70,7 @@ always @(posedge CLK) begin
 		else
 			pwm_compare <= pwm_compare - pwm_increment;
 
-	if (pwm_compare >= 16'hFF00)
+	if (pwm_compare == 16'hFF00)
 		pwm_dir <= 0;
 	if (pwm_compare == 0)
 		pwm_dir <= 1;
