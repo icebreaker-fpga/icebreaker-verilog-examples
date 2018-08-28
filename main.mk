@@ -2,10 +2,10 @@
 all: $(PROJ).rpt $(PROJ).bin
 
 %.blif: %.v $(ADD_SRC) $(ADD_DEPS)
-	yosys -ql $*.log -p 'synth_ice40 -top top -blif $@' $<
+	yosys -ql $*.log -p 'synth_ice40 -top top -blif $@' $< $(ADD_SRC)
 
 %.json: %.v $(ADD_SRC) $(ADD_DEPS)
-	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $<
+	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
 
 ifeq ($(USE_ARACHNEPNR),)
 %.asc: $(PIN_DEF) %.json
