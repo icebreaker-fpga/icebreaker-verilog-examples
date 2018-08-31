@@ -68,30 +68,23 @@ end
 
 // PWM compare value generator
 // Fade through the values using the gamma correction
-reg [16:0] pwm_inc_counter = 0;
-reg [G_PW-1:0] pwm_value = 0;
-reg pwm_dir = 1;
+reg [17:0] pwm_inc_counter = 0;
+reg [G_PW:0] pwm_value = 0;
 always @(posedge CLK) begin
 	// Divide clock by 131071
 	pwm_inc_counter <= pwm_inc_counter + 1;
 
 	// increment/decrement the index
-	if (pwm_inc_counter == 0)
-		if (pwm_dir)
-			pwm_value <= pwm_value + 1;
-		else
-			pwm_value <= pwm_value - 1;
-
-	// Reverse directions when reaching the index extremes
-	if (pwm_value == ((1 << G_PW) - 1))
-		pwm_dir <= 0;
-	if (pwm_value == 0)
-		pwm_dir <= 1;
-
-	if (pwm_inc_counter == 1) begin
-		pwm_compare_0 <= gamma_lut[pwm_value];
-		pwm_compare_1 <= gamma_lut[((1 << G_PW) - 1) - pwm_value];
+	if (pwm_inc_counter[17]) begin
+		pwm_inc_counter <= 0;
+		pwm_value <= pwm_value + 1;
 	end
+
+	// Assign the compare value
+	// The MSB bit of pwm_value determines the direction of the count
+	// It is less expensive on an FPGA than doing an up down counter with dir variable
+	pwm_compare_0 <= gamma_lut[pwm_value[G_PW] ?  pwm_value[G_PW-1:0] : ~pwm_value[G_PW-1:0]];
+	pwm_compare_1 <= gamma_lut[pwm_value[G_PW] ? ~pwm_value[G_PW-1:0] :  pwm_value[G_PW-1:0]];
 end
 
 assign LEDG_N = ~pwm_out_0;
