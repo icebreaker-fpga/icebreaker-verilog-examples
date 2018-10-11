@@ -1,0 +1,70 @@
+CAPI=2:
+
+name : :icebreaker:examples:0
+
+filesets:
+  pcf:
+    files: [icebreaker.pcf : {file_type : PCF}]
+  blink_count_shift:
+    files: [blink_count_shift/blink_count_shift.v : {file_type : verilogSource}]
+  pdm_fade:
+    files: [pdm_fade/pdm.v : {file_type : verilogSource}]
+  pdm_fade_gamma:
+    files: [pdm_fade_gamma/gamma_pdm.v : {file_type : verilogSource}]
+    depend: ["fusesoc:utils:generators"]
+  pll_uart:
+    files:
+      - pll_uart/uart_tx.v : {is_include_file : true}
+      - pll_uart/uart_rx.v : {is_include_file : true}
+      - pll_uart/uart_baud_tick_gen.v : {is_include_file : true}
+      - pll_uart/pll_uart_mirror.v
+    file_type: verilogSource
+  pwm_fade:
+    files: [pwm_fade/pwm.v : {file_type : verilogSource}]
+  pwm_fade_gamma:
+    files: [pwm_fade_gamma/gamma_pwm.v : {file_type : verilogSource}]
+    depend: ["fusesoc:utils:generators"]
+
+targets:
+  blink_count_shift: &target
+    default_tool : icestorm
+    filesets: [pcf, blink_count_shift]
+    tools:
+      icestorm:
+        pnr : next
+        nextpnr_options: [--up5k]
+    toplevel : top
+
+  pdm_fade:
+    <<: *target
+    filesets: [pcf, pdm_fade]
+
+  pdm_fade_gamma:
+    <<: *target
+    filesets: [pcf, pdm_fade_gamma]
+    generate : [gamma_table]
+
+  pll_uart:
+    <<: *target
+    filesets: [pcf, pll_uart]
+
+  pwm_fade:
+    <<: *target
+    filesets: [pcf, pwm_fade]
+
+  pwm_fade_gamma:
+    <<: *target
+    filesets: [pcf, pwm_fade_gamma]
+    generate : [gamma_table]
+
+
+generate:
+  gamma_table:
+    generator: custom
+    parameters:
+      command: make -C pdm_fade_gamma gamma_table.hex
+      copy_core : true
+      run_from_core : true
+      output:
+        files:
+          - pdm_fade_gamma/gamma_table.hex : {file_type : user, copyto: gamma_table.hex}
