@@ -189,14 +189,14 @@ vga_core u_vga_core
 assign vga_ck = clk_40m_tree;
 
 // 3b for single-PMOD
-assign {P1A1,   P1A2,   P1A3,   P1A4,   P1A7,   P1A8,   P1A9,   P1A10} = 
+assign {P1A1,   P1A2,   P1A3,   P1A4,   P1A7,   P1A8,   P1A9,   P1A10} =
        {g[7],   vga_ck, vga_hs, 1'b0,   r[7],   b[7],   vga_de, vga_vs};
 
 
 // 12b for dual-PMOD
-//  assign  pmod_m_d[7:0] = 8'd0;
-//  assign  pmod_m_b[7:0] = 8'd0;
-//  assign  pmod_m_g[7:0] = { g[5],g[4],g[7],g[6],r[5],r[4],r[7],r[6] };
-//  assign  pmod_m_r[7:0] = { vga_hs,vga_vs,b[4],vga_de,vga_ck,b[5],b[7],b[6] };
+//assign {P1A1,   P1A2,   P1A3,   P1A4,   P1A7,   P1A8,   P1A9,   P1A10} =
+//       {r[7],   r[5],   g[7],   g[5],   r[6],   r[4],   g[6],   g[4]};
+//assign {P1B1,   P1B2,   P1B3,   P1B4,   P1B7,   P1B8,   P1B9,   P1B10} =
+//       {b[7],   vga_ck, b[4],   vga_hs, b[6],   b[5],   vga_de, vga_vs};
 
 endmodule // top.v
