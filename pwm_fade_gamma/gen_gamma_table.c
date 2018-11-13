@@ -36,11 +36,14 @@ int main()
 		fprintf(stderr, ".");
 
 		if ((i % 8) == 0) {
-			printf("%s@%08x ", (i != 0) ? "\n" : "", i);
+			printf("@%08x", i);
 		}
-		printf("%04lX ", lvalue);
+		printf(" %04lX", lvalue);
 		//printf("%f\n", value);
 		//printf("%5i | %f\n", i, value);
+		if ((i % 8) == 7) {
+			printf("\n");
+		}
 	}
 
 	fprintf(stderr, "\ndone\n");
