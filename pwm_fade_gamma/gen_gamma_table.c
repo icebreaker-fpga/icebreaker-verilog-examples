@@ -1,5 +1,5 @@
 /*
- *  icebreaker examples - gamma pwm demo 
+ *  icebreaker examples - gamma pwm demo
  *
  *  Copyright (C) 2018 Piotr Esden-Tempski <piotr@esden.net>
  *
@@ -30,7 +30,7 @@ int main()
 	fprintf(stderr, "Generating the gamma lookup table.\n");
 
 	for (int i = 0; i < 256; i++) {
-		double dvalue = pow((1.0 / 256.0) * i, GAMMA);
+		double dvalue = pow((1.0 / 255.0) * i, GAMMA);
 		long lvalue = 0xFFFFl * dvalue;
 
 		fprintf(stderr, ".");
