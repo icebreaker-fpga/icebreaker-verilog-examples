@@ -98,38 +98,38 @@ module pmodcharlie
   always @(*)
   begin
     case (current_digit) // current_digit
-      0: digit_data <= display_data[3:0];
-      1: digit_data <= display_data[7:4];
-      2: digit_data <= display_data[11:8];
-      3: digit_data <= display_data[15:12];
-      4: digit_data <= display_data[19:16];
-      5: digit_data <= display_data[23:20];
-      6: digit_data <= display_data[27:24];
-      7: digit_data <= display_data[31:28];
-      default: digit_data <= 4'b0000;
+      0: digit_data = display_data[3:0];
+      1: digit_data = display_data[7:4];
+      2: digit_data = display_data[11:8];
+      3: digit_data = display_data[15:12];
+      4: digit_data = display_data[19:16];
+      5: digit_data = display_data[23:20];
+      6: digit_data = display_data[27:24];
+      7: digit_data = display_data[31:28];
+      default: digit_data = 4'b0000;
     endcase
   end
 
   // Map digit_data to segments
   always @(*) begin
     case (digit_data)
-      'h0: segments <= 'b0111111;
-      'h1: segments <= 'b0000110;
-      'h2: segments <= 'b1011011;
-      'h3: segments <= 'b1001111;
-      'h4: segments <= 'b1100110;
-      'h5: segments <= 'b1101101;
-      'h6: segments <= 'b1111101;
-      'h7: segments <= 'b0000111;
-      'h8: segments <= 'b1111111;
-      'h9: segments <= 'b1101111;
-      'hA: segments <= 'b1110111;
-      'hB: segments <= 'b1111100;
-      'hC: segments <= 'b0111001;
-      'hD: segments <= 'b1011110;
-      'hE: segments <= 'b1111001;
-      'hF: segments <= 'b1110001;
-      default: digit_data <= 7'b0000000;
+      'h0: segments = 'b0111111;
+      'h1: segments = 'b0000110;
+      'h2: segments = 'b1011011;
+      'h3: segments = 'b1001111;
+      'h4: segments = 'b1100110;
+      'h5: segments = 'b1101101;
+      'h6: segments = 'b1111101;
+      'h7: segments = 'b0000111;
+      'h8: segments = 'b1111111;
+      'h9: segments = 'b1101111;
+      'hA: segments = 'b1110111;
+      'hB: segments = 'b1111100;
+      'hC: segments = 'b0111001;
+      'hD: segments = 'b1011110;
+      'hE: segments = 'b1111001;
+      'hF: segments = 'b1110001;
+      default: segments = 7'b0000000;
     endcase
   end
 
@@ -148,22 +148,13 @@ module pmodcharlie
     tristate_pins[current_segment2] <= segments[current_segment];
   end
 
-  // Generate output buffers to enable tristate on Pins
-  genvar gen_i;
-  generate
-      for (gen_i=0; gen_i<8; gen_i=gen_i+1) begin : generate_block_identifier
-    SB_IO
-      #(
-          .PIN_TYPE(6'b 1010_01),
-          .PULLUP(1'b 0)
-      ) led0
-      (
-          .PACKAGE_PIN(pins[gen_i]),
-          .OUTPUT_ENABLE(tristate_pins[gen_i]),
-          .D_OUT_0(output_pins[gen_i]),
-          // .D_IN_0(xxx)
-      );
-  end
-  endgenerate
+  SB_IO #(
+    .PIN_TYPE(6'b 1010_01),
+    .PULLUP(1'b 0)
+  ) led_io[7:0] (
+    .PACKAGE_PIN(pins),
+    .OUTPUT_ENABLE(tristate_pins),
+    .D_OUT_0(output_pins),
+  );
 
 endmodule
