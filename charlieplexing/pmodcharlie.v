@@ -2,7 +2,7 @@
 
 module top(
     input CLK,
-    output P1A1, P1A2, P1A3, P1A4, P1A7, P1A8, P1A9, P1A10
+    output P2_1, P2_2, P2_3, P2_4, P2_7, P2_8, P2_9, P2_10
   );
 
   localparam CLK_FREQUENCY = 12E6;
@@ -25,14 +25,14 @@ module top(
   end
 
   // map output pins of pmodcharlie module to pins on iCEBreaker
-  assign pmodmap[0] = P1A1;
-  assign pmodmap[1] = P1A8;
-  assign pmodmap[2] = P1A4;
-  assign pmodmap[3] = P1A10;
-  assign pmodmap[4] = P1A9;
-  assign pmodmap[5] = P1A2;
-  assign pmodmap[6] = P1A7;
-  assign pmodmap[7] = P1A3;
+  assign pmodmap[0] = P2_1;
+  assign pmodmap[1] = P2_8;
+  assign pmodmap[2] = P2_4;
+  assign pmodmap[3] = P2_10;
+  assign pmodmap[4] = P2_9;
+  assign pmodmap[5] = P2_2;
+  assign pmodmap[6] = P2_7;
+  assign pmodmap[7] = P2_3;
 
   pmodcharlie pmodCharlieA(
     .clk(CLK),
