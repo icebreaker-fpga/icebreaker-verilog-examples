@@ -9,10 +9,10 @@ all: $(PROJ).rpt $(PROJ).bin
 
 ifeq ($(USE_ARACHNEPNR),)
 %.asc: $(PIN_DEF) %.json
-	nextpnr-ice40 --$(DEVICE) --json $(filter-out $<,$^) --pcf $< --asc $@
+	nextpnr-ice40 --$(DEVICE) $(if $(PACKAGE),--package $(PACKAGE)) $(if $(FREQ),--freq $(FREQ)) --json $(filter-out $<,$^) --pcf $< --asc $@
 else
 %.asc: $(PIN_DEF) %.blif
-	arachne-pnr -d $(subst up,,$(subst hx,,$(subst lp,,$(DEVICE)))) -o $@ -p $^
+	arachne-pnr -d $(subst up,,$(subst hx,,$(subst lp,,$(DEVICE)))) $(if $(PACKAGE),-P $(PACKAGE)) -o $@ -p $^
 endif
 
 
@@ -20,7 +20,7 @@ endif
 	icepack $< $@
 
 %.rpt: %.asc
-	icetime -d $(DEVICE) -mtr $@ $<
+	icetime $(if $(FREQ),-c $(FREQ)) -d $(DEVICE) -mtr $@ $<
 
 %_tb: %_tb.v %.v
 	iverilog -o $@ $^
