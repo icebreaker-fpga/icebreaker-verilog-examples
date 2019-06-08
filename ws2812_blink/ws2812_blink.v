@@ -23,7 +23,7 @@ module top (
 	wire [7:0] byteno = counter[14:7]; // count bytes (3 per pixel)
 	wire [2:0] bitno  = counter[6:4];  // count bits in a byte
 	wire onbyte = (byteno[1:0] != 0);  // turn off every 4th byte to create color cycle
-	wire onbits = (bitno == 4);        // smaller bitno == brighter LED, or MSB to LSB order
+	wire onbits = (bitno == 6);        // smaller bitno == brighter LED, or MSB to LSB order
 	wire blink  = outcnt[1];           // approx 1 Hz
 	wire led_red_n;
 	reg wsbit;
