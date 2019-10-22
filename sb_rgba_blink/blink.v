@@ -32,20 +32,20 @@ module blink (
 	assign rgb_pwm[2] = cnt[25] & (cnt[2:0] == 3'b000);
 
 	SB_RGBA_DRV #(
-        .CURRENT_MODE("0b1"),
-        .RGB0_CURRENT("0b000001"),
-        .RGB1_CURRENT("0b000001"),
-        .RGB2_CURRENT("0b000001")
-    ) rgb_drv_I (
-      .RGBLEDEN(1'b1),
-      .RGB0PWM(rgb_pwm[0]),
-      .RGB1PWM(rgb_pwm[1]),
-      .RGB2PWM(rgb_pwm[2]),
-      .CURREN(1'b1),
-      .RGB0(rgb[0]),
-      .RGB1(rgb[1]),
-      .RGB2(rgb[2])
-    );
+		.CURRENT_MODE("0b1"),
+		.RGB0_CURRENT("0b000001"),
+		.RGB1_CURRENT("0b000001"),
+		.RGB2_CURRENT("0b000001")
+	) rgb_drv_I (
+		.RGBLEDEN(1'b1),
+		.RGB0PWM(rgb_pwm[0]),
+		.RGB1PWM(rgb_pwm[1]),
+		.RGB2PWM(rgb_pwm[2]),
+		.CURREN(1'b1),
+		.RGB0(rgb[0]),
+		.RGB1(rgb[1]),
+		.RGB2(rgb[2])
+	);
 
 endmodule // blink
 
