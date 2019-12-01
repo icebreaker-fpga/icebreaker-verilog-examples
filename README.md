@@ -10,4 +10,4 @@ For installation instructions of the icestorm flow follow the instructons on the
 
 The default Placement Constraint File (.pcf) for iCEBreaker can be found in the toplevel directory and contains references to all the default pins on the iCEBreaker development board. This file can be referenced by all the examples that use that board.
 
-If you have any questions please join the gitter channel and ask away: http://gitter.im/icebreaker-fpga/Lobby
+If you have any questions please join the Discord channel and ask away: [1bitsquared.com/pages/chat](https://1bitsquared.com/pages/chat/)
