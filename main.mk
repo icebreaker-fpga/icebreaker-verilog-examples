@@ -23,7 +23,7 @@ endif
 	icetime $(if $(FREQ),-c $(FREQ)) -d $(DEVICE) -mtr $@ $<
 
 %_tb: %_tb.v %.v
-	iverilog -o $@ $^
+	iverilog -g2012 -o $@ $^
 
 %_tb.vcd: %_tb
 	vvp -N $< +vcd=$@
