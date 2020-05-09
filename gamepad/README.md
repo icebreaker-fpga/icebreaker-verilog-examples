@@ -76,4 +76,4 @@ And then open it in gtkwave with:
 gtkwave gamepad_mod_tb.vcd
 ```
 
-TIP: You can reload the vcd file without restarting gtkwave with Ctrl-R ;)
+TIP: You can reload the vcd file without restarting gtkwave with Ctrl-Shift-R ;)
