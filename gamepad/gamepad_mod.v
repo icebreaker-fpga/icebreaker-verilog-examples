@@ -48,7 +48,7 @@ module gamepads #(
 /* Generate strobe */
 reg strobe;
 reg [LOG_N_DIV:0] clk_div = N_DIV - 1;
-always @(negedge clk) begin
+always @(posedge clk) begin
 	if (rst) begin
 		clk_div <= N_DIV;
 		strobe <= 0;
