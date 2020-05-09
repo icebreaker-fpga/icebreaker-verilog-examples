@@ -151,7 +151,7 @@ always @(posedge clk_42mhz) begin
 	end
 end
 
-assign {LED5, LED4, LED3, LED2, LED1} = gp1_reg[4:0];
+assign {LEDG_N, LEDR_N, LED5, LED4, LED3, LED2, LED1} = gp1_reg[6:0];
 
 /* Instantiate the tx1 module.
  * This module will send out hex values representing the
