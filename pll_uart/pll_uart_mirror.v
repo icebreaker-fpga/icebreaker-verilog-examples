@@ -17,9 +17,6 @@
  *
  */
 
-`include "uart_rx.v"
-`include "uart_tx.v"
-
 module top (
 	input  CLK,
 	input RX,
@@ -47,15 +44,16 @@ SB_PLL40_PAD #(
 ) usb_pll_inst (
   .PACKAGEPIN(CLK),
   .PLLOUTCORE(clk_42mhz),
+  //.PLLOUTGLOBAL(),
   .EXTFEEDBACK(),
   .DYNAMICDELAY(),
   .RESETB(1'b1),
   .BYPASS(1'b0),
   .LATCHINPUTVALUE(),
-  .LOCK(),
-  .SDI(),
-  .SDO(),
-  .SCLK()
+  //.LOCK(),
+  //.SDI(),
+  //.SDO(),
+  //.SCLK()
 );
 
 /* local parameters */

@@ -17,11 +17,6 @@
  *
  */
 
-`ifndef _uart_tx_v_
-`define _uart_tx_v_
-
-`include "uart_baud_tick_gen.v"
-
 module uart_tx(
 	input clk,
 	input tx_start,
@@ -87,5 +82,3 @@ end
 assign tx = (tx_state < 4) | (tx_state[3] & tx_shift[0]);
 
 endmodule
-
-`endif // _uart_tx_v_

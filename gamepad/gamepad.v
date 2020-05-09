@@ -17,9 +17,7 @@
  *
  */
 
-`include "gamepad_mod.v"
-`include "uart_tx.v"
-`include "gamepad_sender_mod.v"
+`default_nettype none
 
 module top (
 	input  CLK,

@@ -17,11 +17,6 @@
  *
  */
 
-`ifndef _uart_rx_v_
-`define _uart_rx_v_
-
-`include "uart_baud_tick_gen.v"
-
 module uart_rx(
 	input clk,
 	input rx,
@@ -135,5 +130,3 @@ assign rx_idle = gap_cnt[l2o+1];
 always @(posedge clk) rx_eop <= os_tick & ~gap_cnt[l2o+1] & &gap_cnt[l2o:0];
 
 endmodule
-
-`endif // _uart_rx_v_

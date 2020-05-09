@@ -17,9 +17,6 @@
  *
  */
 
-`ifndef _uart_baud_tick_gen_v_
-`define _uart_baud_tick_gen_v_
-
 /***
  * This module generates a bit baud tick multiplied by the oversampling parameter.
  */
@@ -44,5 +41,3 @@ always @(posedge clk) if (enable) acc <= acc[acc_width-1:0] + inc[acc_width:0]; 
 assign tick = acc[acc_width];
 
 endmodule
-
-`endif // _uart_baud_tick_gen_v_
