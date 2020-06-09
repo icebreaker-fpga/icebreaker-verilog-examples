@@ -1,0 +1,53 @@
+# 12 MHz clock
+set_io -nowarn CLK        35
+
+# USB
+set_io -nowarn USB_DET    37
+set_io -nowarn USB_N      38
+set_io -nowarn USB_P      39
+
+# LEDs and Button
+set_io -nowarn BTN_N       2
+set_io -nowarn LEDR_N     25
+set_io -nowarn LEDG_N      6
+
+# RGB LED Driver
+set_io -nowarn LED_RED_N  39
+set_io -nowarn LED_GRN_N  40
+set_io -nowarn LED_BLU_N  41
+
+# QSPI Flash/RAM
+set_io -nowarn RAM_CSN     6
+set_io -nowarn FLASH_CSN  16
+set_io -nowarn SPI_CSN    16
+set_io -nowarn SPI_SCK    15
+set_io -nowarn SPI_IO0    14
+set_io -nowarn SPI_IO1    17
+set_io -nowarn SPI_IO2    18
+set_io -nowarn SPI_IO3    19
+
+# GPIO
+set_io -nowarn D0         47
+set_io -nowarn D1         44
+set_io -nowarn D2         48
+set_io -nowarn D3         45
+set_io -nowarn D4          4
+set_io -nowarn D5          3
+set_io -nowarn D6          9
+set_io -nowarn D7         10
+set_io -nowarn D8         11
+set_io -nowarn D9         12
+set_io -nowarn D10        21
+set_io -nowarn D11        13
+set_io -nowarn D12        20
+set_io -nowarn D13        25
+set_io -nowarn D14        23
+set_io -nowarn D15        27
+set_io -nowarn D16        26
+set_io -nowarn D17        28
+set_io -nowarn D18        31
+set_io -nowarn D19        32
+set_io -nowarn D20        34
+set_io -nowarn D21        36
+set_io -nowarn D22        43
+set_io -nowarn D23        46
