@@ -8,8 +8,8 @@ set_io -nowarn USB_DP     39
 
 # Button and LEDs
 set_io -nowarn BTN_n       2
-set_io -nowarn LEDR       25
-set_io -nowarn LEDG        6
+set_io -nowarn LED_R      25
+set_io -nowarn LED_G       6
 
 # RGB LED Driver
 set_io -nowarn RGB[0]     39
