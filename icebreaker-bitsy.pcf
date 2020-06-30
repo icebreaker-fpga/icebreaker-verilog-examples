@@ -17,9 +17,9 @@ set_io -nowarn LED_GRN_N  40
 set_io -nowarn LED_BLU_N  41
 
 # QSPI Flash/RAM
-set_io -nowarn RAM_CSN     6
-set_io -nowarn FLASH_CSN  16
-set_io -nowarn SPI_CSN    16
+set_io -nowarn RAM_CS_N    6
+set_io -nowarn FLASH_CS_N 16
+set_io -nowarn SPI_CS_N   16
 set_io -nowarn SPI_SCK    15
 set_io -nowarn SPI_IO0    14
 set_io -nowarn SPI_IO1    17
