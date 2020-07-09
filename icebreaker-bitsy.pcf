@@ -4,7 +4,7 @@ set_io -nowarn CLK        35
 # USB
 set_io -nowarn USB_DET    37
 set_io -nowarn USB_DN     38
-set_io -nowarn USB_DP     39
+set_io -nowarn USB_DP     42
 
 # Button and LEDs
 set_io -nowarn BTN_n       2
