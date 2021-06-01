@@ -37,12 +37,18 @@ endif
 %_syntb.vcd: %_syntb
 	vvp -N $< +vcd=$@
 
-prog: $(PROJ).bin
+iceprog: $(PROJ).bin
 	iceprog $<
 
-sudo-prog: $(PROJ).bin
+sudo-iceprog: $(PROJ).bin
 	@echo 'Executing prog as root!!!'
 	sudo iceprog $<
+
+dfuprog: $(PROJ).bin
+	dfu-util -a 0 -D $< -R
+
+sudo-dfuprog: $(PROJ).bin
+	sudo dfu-util -a 0 -D $< -R
 
 clean:
 	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
