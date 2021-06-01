@@ -10,8 +10,8 @@
 
 `default_nettype none
 
-module blink (
-	output wire [2:0] rgb,
+module top (
+	output wire [2:0] LED_RGB,
 );
 
 	reg [27:0] cnt;
@@ -42,9 +42,9 @@ module blink (
 		.RGB1PWM(rgb_pwm[1]),
 		.RGB2PWM(rgb_pwm[2]),
 		.CURREN(1'b1),
-		.RGB0(rgb[0]),
-		.RGB1(rgb[1]),
-		.RGB2(rgb[2])
+		.RGB0(LED_RGB[0]),
+		.RGB1(LED_RGB[1]),
+		.RGB2(LED_RGB[2])
 	);
 
 endmodule // blink
