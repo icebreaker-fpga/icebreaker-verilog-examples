@@ -45,10 +45,18 @@ sudo-iceprog: $(PROJ).bin
 	sudo iceprog $<
 
 dfuprog: $(PROJ).bin
+ifeq ($(DFU_SERIAL),)
 	dfu-util -a 0 -D $< -R
+else
+	dfu-util -S $(DFU_SERIAL) -a 0 -D $< -R
+endif
 
 sudo-dfuprog: $(PROJ).bin
+ifeq ($(DFU_SERIAL),)
 	sudo dfu-util -a 0 -D $< -R
+else
+	sudo dfu-util -S $(DFU_SERIAL)  -a 0 -D $< -R
+endif
 
 clean:
 	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
