@@ -46,18 +46,10 @@ module top (
 	// satisfy the WS2812 reset condition.
 	assign led_red_n = byteno < 64*3 ? ~wsbit : 1'b1;
 
-`ifdef USE_ARACHNEPNR
-	SB_IO_OD #(.PIN_TYPE({4'b1010, 2'b01})) io_led_red_n( // PIN_OUTPUT_TRISTATE, PIN_INPUT
-			.PACKAGEPIN(LED_RED_N),
-			.OUTPUTENABLE(1'b1),
-			.DOUT0(led_red_n)
-	);
-`else
 	SB_IO    #(.PIN_TYPE({4'b1010, 2'b01})) io_led_red_n( // PIN_OUTPUT_TRISTATE, PIN_INPUT
 			.PACKAGE_PIN(LED_RED_N),
 			.OUTPUT_ENABLE(1'b1),
 			.D_OUT_0(led_red_n)
 	);
-`endif
 
 endmodule
