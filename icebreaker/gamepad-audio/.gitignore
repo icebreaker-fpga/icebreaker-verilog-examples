@@ -1,0 +1,3 @@
+gen_sin_table
+gen_sin_table.o
+sin_table.hex

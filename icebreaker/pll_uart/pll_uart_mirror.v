@@ -64,8 +64,8 @@ localparam baud = 115200;
 
 
 /* instantiate the rx1 module */
-wire reg rx1_ready;
-wire reg [7:0] rx1_data;
+reg rx1_ready;
+reg [7:0] rx1_data;
 uart_rx #(clk_freq, baud) urx1 (
 	.clk(clk_42mhz),
 	.rx(RX),
@@ -74,9 +74,9 @@ uart_rx #(clk_freq, baud) urx1 (
 );
 
 /* instantiate the tx1 module */
-wire reg tx1_start;
-wire reg [7:0] tx1_data;
-wire reg tx1_busy;
+reg tx1_start;
+reg [7:0] tx1_data;
+reg tx1_busy;
 uart_tx #(clk_freq, baud) utx1 (
 	.clk(clk_42mhz),
 	.tx_start(tx1_start),
@@ -87,9 +87,9 @@ uart_tx #(clk_freq, baud) utx1 (
 
 // Send the received data immediately back
 
-wire reg [7:0] data_buf;
-wire reg data_flag = 0;
-wire reg data_check_busy = 0;
+reg [7:0] data_buf;
+reg data_flag = 0;
+reg data_check_busy = 0;
 always @(posedge clk_42mhz) begin
 
   // we got a new data strobe
