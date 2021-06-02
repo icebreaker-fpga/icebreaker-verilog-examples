@@ -22,6 +22,9 @@ set_io -nowarn LEDG_N      6
 set_io -nowarn LED_RED_N  39
 set_io -nowarn LED_GRN_N  40
 set_io -nowarn LED_BLU_N  41
+set_io -nowarn LED_RGB[0] 39
+set_io -nowarn LED_RGB[1] 40
+set_io -nowarn LED_RGB[2] 41
 
 # SPI Flash
 set_io -nowarn FLASH_SCK  15
