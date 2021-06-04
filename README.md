@@ -4,7 +4,7 @@
 
 This repository contains examples for the iCEBreaker FPGA educational and development board.
 
-The goal of this repository is to provide simple examples that can serve as a starting point for the explaration of the iCEBreaker ecosystem. All examples are using the Yosys/nextpnr/icestorm open source flow for ICE40 FPGA. No need for any signups and large downloads of proprietary toolchains necessary.
+The goal of this repository is to provide simple examples that can serve as a starting point for the exploration of the iCEBreaker ecosystem. All examples are using the Yosys/nextpnr/icestorm open source flow for ICE40 FPGA. No need for any signups and large downloads of proprietary toolchains necessary.
 
 ## Dependencies
 
