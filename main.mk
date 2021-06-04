@@ -1,9 +1,6 @@
 
 all: $(PROJ).rpt $(PROJ).bin
 
-%.blif: %.v $(ADD_SRC) $(ADD_DEPS)
-	yosys -ql $*.log -p 'synth_ice40 -top top -blif $@' $< $(ADD_SRC)
-
 %.json: %.v $(ADD_SRC) $(ADD_DEPS)
 	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
 
@@ -22,8 +19,8 @@ all: $(PROJ).rpt $(PROJ).bin
 %_tb.vcd: %_tb
 	vvp -N $< +vcd=$@
 
-%_syn.v: %.blif
-	yosys -p 'read_blif -wideports $^; write_verilog $@'
+%_syn.v: %.json
+	yosys -p 'read_json $^; write_verilog $@'
 
 %_syntb: %_tb.v %_syn.v
 	iverilog -o $@ $^ `yosys-config --datdir/ice40/cells_sim.v`
