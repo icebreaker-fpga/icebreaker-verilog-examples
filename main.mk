@@ -54,3 +54,4 @@ clean:
 
 .SECONDARY:
 .PHONY: all prog clean
+.DEFAULT_GOAL := all
