@@ -81,7 +81,7 @@ end
 // Note: You will see that the LEDs spend more time being very bright
 // than visibly fading, this is because our vision is non linear. Take a look
 // at the pwm_fade_gamma example that fixes this issue. :)
-reg [17:0] pdm_inc_counter = 0;
+reg [13:0] pdm_inc_counter = 0;
 reg [16-2:0] pdm_level_value;
 reg pdm_dir = 1;
 always @(posedge CLK) begin
@@ -89,7 +89,7 @@ always @(posedge CLK) begin
 	pdm_inc_counter <= pdm_inc_counter + 1;
 
 	// increment/decrement pwm compare value at 91.55Hz
-	if (pdm_inc_counter[17]) begin
+	if (pdm_inc_counter[13]) begin
 		pdm_inc_counter <= 0;
 		pdm_level_value <= pdm_level_value + 1;
 	end
