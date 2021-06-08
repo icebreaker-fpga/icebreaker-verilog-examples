@@ -85,10 +85,10 @@ reg [13:0] pdm_inc_counter = 0;
 reg [16-2:0] pdm_level_value;
 reg pdm_dir = 1;
 always @(posedge CLK) begin
-	// Divide clock by 131071
+	// Divide clock by 8192
 	pdm_inc_counter <= pdm_inc_counter + 1;
 
-	// increment/decrement pwm compare value at 91.55Hz
+	// increment/decrement pdm value at 1.5kHz
 	if (pdm_inc_counter[13]) begin
 		pdm_inc_counter <= 0;
 		pdm_level_value <= pdm_level_value + 1;
