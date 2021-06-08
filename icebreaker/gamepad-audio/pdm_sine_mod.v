@@ -73,14 +73,20 @@ initial $readmemh("sin_table.hex", sin_lut);
 
 // Convert input value to LUT output value
 wire [SIN_I_BW + 1:0] lut_in;
-wire [SIN_O_BW - 1:0] lut_int;
-wire [SIN_O_BW - 1:0] lut_intn;
 wire [SIN_O_BW - 1:0] lut_out;
-assign lut_int = lut_in[SIN_I_BW] ? sin_lut[~lut_in[SIN_I_BW - 1:0]] :
-									sin_lut[lut_in[SIN_I_BW - 1:0]];
-assign lut_intn = ~lut_int;
-assign lut_out = {lut_in[SIN_I_BW + 1],
-				  lut_in[SIN_I_BW + 1] ? lut_intn[SIN_O_BW-1:0] : lut_int[SIN_O_BW-1:0]};
+wire [SIN_I_BW - 1:0] lut_raddr;
+reg  [SIN_O_BW - 1:0] lut_rdata;
+reg                   lut_inv;
+
+assign lut_raddr = lut_in[SIN_I_BW] ? ~lut_in[SIN_I_BW - 1:0] : lut_in[SIN_I_BW - 1:0];
+
+always @(posedge clk)
+	lut_rdata <=  sin_lut[lut_raddr];
+
+always @(posedge clk)
+	lut_inv <= lut_in[SIN_I_BW + 1];
+
+assign lut_out = lut_inv ? ~lut_rdata : lut_rdata;
 
 // Generate input to the LUT signal generator
 reg [19:0] sin_counter;
