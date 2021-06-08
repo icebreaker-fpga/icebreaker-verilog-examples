@@ -37,16 +37,16 @@ sudo-iceprog: $(PROJ).bin
 
 dfuprog: $(PROJ).bin
 ifeq ($(DFU_SERIAL),)
-	dfu-util -a 0 -D $< -R
+	dfu-util -d 1d50:6146 -a 0 -D $< -R
 else
-	dfu-util -S $(DFU_SERIAL) -a 0 -D $< -R
+	dfu-util -d 1d50:6146 -S $(DFU_SERIAL) -a 0 -D $< -R
 endif
 
 sudo-dfuprog: $(PROJ).bin
 ifeq ($(DFU_SERIAL),)
-	sudo dfu-util -a 0 -D $< -R
+	sudo dfu-util -d 1d50:6146 -a 0 -D $< -R
 else
-	sudo dfu-util -S $(DFU_SERIAL)  -a 0 -D $< -R
+	sudo dfu-util -d 1d50:6146 -S $(DFU_SERIAL)  -a 0 -D $< -R
 endif
 
 clean:
