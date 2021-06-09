@@ -38,20 +38,28 @@ module vga_core
   reg  [15:0]   u0_pel_x;
   reg  [15:0]   u0_pel_y;
   reg  [23:0]   vga_rgb_tp;
-  reg  [23:0]   vga_rgb_ball;
+  wire [23:0]   vga_rgb_ball;
   reg  [23:0]   vga_rgb_line;
   reg  [23:0]   vga_rgb;
   wire [7:0]    ramp;
+
   reg  [15:0]   ball_x_dir;
   reg  [15:0]   ball_y_dir;
   reg  [23:0]   ball_x_pos;
   reg  [23:0]   ball_y_pos;
+  wire [11:0]   ball_x_diff;
+  wire [11:0]   ball_y_diff;
+  reg           ball_x_match;
+  reg           ball_y_match;
+
   reg  [3:0]    dir_chg_sr;
   reg  [23:0]   ball_rgb;
   reg  [3:0]    demo_mode;
   reg           mode_bit_p1;
-  reg  [15:0]   line_x_pos;
-  reg  [15:0]   line_y_pos;
+  reg  [15:0]   line_x0_pos;
+  reg  [15:0]   line_x1_pos;
+  reg  [15:0]   line_y0_pos;
+  reg  [15:0]   line_y1_pos;
   reg  [23:0]   line_rgb;
 
 
@@ -117,24 +125,30 @@ end // proc_out_mux
 always @ ( posedge clk_dot ) begin : proc_line
  begin
   if ( mode_bit == 0 ) begin
-    line_x_pos <= 16'd400;
-    line_y_pos <= 16'd300;
-    line_rgb   <= random_num[23:0];// Change color 
+    line_x0_pos <= 16'd0;
+    line_x1_pos <= 16'd799;
+    line_y0_pos <= 16'd0;
+    line_y1_pos <= 16'd599;
+    line_rgb    <= random_num[23:0];// Change color
   end else begin
     if ( u0_vid_new_frame == 1 ) begin
-      line_x_pos <= line_x_pos - 1;
-      line_y_pos <= line_y_pos - 1;
-      if ( line_x_pos == 16'd0 || line_y_pos == 16'd0 ) begin
-        line_x_pos <= 16'd400;
-        line_y_pos <= 16'd300;
-        line_rgb   <= random_num[23:0];// Change color 
+      line_x0_pos <= line_x0_pos + 1;
+	  line_x1_pos <= line_x1_pos - 1;
+      line_y0_pos <= line_y0_pos + 1;
+      line_y1_pos <= line_y1_pos - 1;
+      if ( line_x0_pos == 16'd400 || line_y0_pos == 16'd300 ) begin
+		line_x0_pos <= 16'd0;
+		line_x1_pos <= 16'd799;
+        line_y0_pos <= 16'd0;
+        line_y1_pos <= 16'd599;
+        line_rgb    <= random_num[23:0];// Change color
       end
     end
     vga_rgb_line[23:0] <= { 8'd0, 8'd0, 8'd0 };
-    if ( u0_pel_x == 16'd400 - line_x_pos[15:0] ||
-         u0_pel_x == 16'd400 + line_x_pos[15:0] ||
-         u0_pel_y == 16'd300 - line_y_pos[15:0] ||
-         u0_pel_y == 16'd300 + line_y_pos[15:0]    ) begin
+    if ( u0_pel_x == line_x0_pos[15:0] ||
+         u0_pel_x == line_x1_pos[15:0] ||
+         u0_pel_y == line_y0_pos[15:0] ||
+         u0_pel_y == line_y1_pos[15:0]    ) begin
       vga_rgb_line[23:0] <= { 1'b1, line_rgb[22:0] };
     end
   end
@@ -145,11 +159,17 @@ end // proc_line
 // ----------------------------------------------------------------------------
 // Bouncing Ball
 // ----------------------------------------------------------------------------
+
+// Diff between current pos and ball center (limit to 12 bits, it's enough
+// for the range and helps timing)
+assign ball_x_diff = {1'b0, u0_pel_x[10:0]} - {1'b0, ball_x_pos[18:8]};
+assign ball_y_diff = {1'b0, u0_pel_y[10:0]} - {1'b0, ball_y_pos[18:8]};
+
 always @ ( posedge clk_dot ) begin : proc_ball
  begin
   if ( mode_bit == 0 ) begin
-    ball_x_pos <= {8'd0, 8'd400, 8'd0 };       // Start in center of 800x600
-    ball_y_pos <= {8'd0, 8'd300, 8'd0 };
+    ball_x_pos <= {16'd400, 8'd0 };       // Start in center of 800x600
+    ball_y_pos <= {16'd300, 8'd0 };
     ball_rgb   <= random_num[23:0];            // Get a random RGB Ball color
     ball_x_dir <= { 2'b01, random_num[11:2]  };// 4bit int,8bit fract direction
     ball_y_dir <= { 2'b01, random_num[23:14] };// 4bit int,8bit fract direction
@@ -181,17 +201,14 @@ always @ ( posedge clk_dot ) begin : proc_ball
       end
     end
 
-    vga_rgb_ball[23:0] <= { 8'h00, 8'h00, 8'h00 };
-    // ~Ball~ is actually a 16x16 square centered around the ball x,y 
-    if ( u0_pel_x > ball_x_pos[23:8] - 16'd8  &&
-         u0_pel_x < ball_x_pos[23:8] + 16'd8  &&
-         u0_pel_y > ball_y_pos[23:8] - 16'd8  &&
-         u0_pel_y < ball_y_pos[23:8] + 16'd8     ) begin
-      vga_rgb_ball[23:0] <= { 1'b1, ball_rgb[22:0] };
-    end
+    // Bounding box -8 to 7 around each axis
+    ball_x_match <= {3{ball_x_diff[11]}} == ball_x_diff[2:0];
+    ball_y_match <= {3{ball_y_diff[11]}} == ball_y_diff[2:0];
   end
  end // clk+reset
 end // proc_ball
+
+assign vga_rgb_ball = (ball_x_match && ball_y_match) ? { 1'b1, ball_rgb[22:0] } : { 8'h00, 8'h00, 8'h00 };
 
 
 // ----------------------------------------------------------------------------
