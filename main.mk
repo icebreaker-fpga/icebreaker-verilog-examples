@@ -32,12 +32,15 @@ sudo-iceprog: $(PROJ).bin
 	@echo 'Executing prog as root!!!'
 	sudo iceprog $<
 
+# The default DFU device is the no2bootloader used by icebreaker-bitsy
+DFU_DEVICE ?= 1d50:6146
+
 dfuprog: $(PROJ).bin
-	dfu-util -d 1d50:6146 $(if $(DFU_SERIAL),-S $(DFU_SERIAL)) -a 0 -D $< -R
+	dfu-util$(if $(DFU_DEVICE), -d $(DFU_DEVICE))$(if $(DFU_SERIAL), -S $(DFU_SERIAL)) -a 0 -D $< -R
 
 sudo-dfuprog: $(PROJ).bin
 	@echo 'Executing dfu-util as root!!!'
-	sudo dfu-util -d 1d50:6146 $(if $(DFU_SERIAL),-S $(DFU_SERIAL)) -a 0 -D $< -R
+	sudo dfu-util$(if $(DFU_DEVICE), -d $(DFU_DEVICE))$(if $(DFU_SERIAL), -S $(DFU_SERIAL)) -a 0 -D $< -R
 
 clean:
 	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
