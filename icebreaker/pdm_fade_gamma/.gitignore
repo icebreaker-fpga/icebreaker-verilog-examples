@@ -1,2 +1,3 @@
-gen_gamma_table*
-gamma_table.hex
+*.o
+*.hex
+gen_gamma_table
