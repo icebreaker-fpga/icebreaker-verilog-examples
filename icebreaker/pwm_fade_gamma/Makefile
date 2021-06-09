@@ -4,6 +4,7 @@ ADD_CLEAN = *.o gen_gamma_table *.hex
 
 PIN_DEF = ../icebreaker.pcf
 DEVICE = up5k
+PACKAGE = sg48
 
 prog: iceprog
 
