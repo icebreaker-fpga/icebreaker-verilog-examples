@@ -1,5 +1,5 @@
 
-all: $(PROJ).rpt $(PROJ).bin
+all: $(PROJ).bin
 
 %.json: %.v $(ADD_SRC) $(ADD_DEPS)
 	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
@@ -9,9 +9,6 @@ all: $(PROJ).rpt $(PROJ).bin
 
 %.bin: %.asc
 	icepack $< $@
-
-%.rpt: %.asc
-	icetime $(if $(FREQ),-c $(FREQ)) -d $(DEVICE) -mtr $@ $<
 
 %_tb: %_tb.v %.v
 	iverilog -g2012 -o $@ $^
@@ -50,7 +47,7 @@ else
 endif
 
 clean:
-	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
+	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
 
 .SECONDARY:
 .PHONY: all prog clean
