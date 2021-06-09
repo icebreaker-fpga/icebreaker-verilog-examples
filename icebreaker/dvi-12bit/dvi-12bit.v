@@ -96,8 +96,7 @@ module top
 SB_PLL40_PAD #(
   .DIVR(4'b0000),
   // 40MHz ish to be exact it is 39.750MHz
-  //.DIVF(7'b0110111), // 42MHz
-  .DIVF(7'b0110101), // 39.750MHz
+  .DIVF(7'b0110100), // 39.750MHz
   .DIVQ(3'b100),
   .FILTER_RANGE(3'b001),
   .FEEDBACK_PATH("SIMPLE"),
@@ -108,10 +107,10 @@ SB_PLL40_PAD #(
   .SHIFTREG_DIV_MODE(2'b00),
   .PLLOUT_SELECT("GENCLK"),
   .ENABLE_ICEGATE(1'b0)
-) usb_pll_inst (
+) pll_inst (
   .PACKAGEPIN(CLK),
-  .PLLOUTCORE(clk_40m_tree),
-  //.PLLOUTGLOBAL(),
+  .PLLOUTCORE(),
+  .PLLOUTGLOBAL(clk_40m_tree),
   .EXTFEEDBACK(),
   .DYNAMICDELAY(),
   .RESETB(1'b1),
