@@ -33,18 +33,11 @@ sudo-iceprog: $(PROJ).bin
 	sudo iceprog $<
 
 dfuprog: $(PROJ).bin
-ifeq ($(DFU_SERIAL),)
-	dfu-util -d 1d50:6146 -a 0 -D $< -R
-else
-	dfu-util -d 1d50:6146 -S $(DFU_SERIAL) -a 0 -D $< -R
-endif
+	dfu-util -d 1d50:6146 $(if $(DFU_SERIAL),-S $(DFU_SERIAL)) -a 0 -D $< -R
 
 sudo-dfuprog: $(PROJ).bin
-ifeq ($(DFU_SERIAL),)
-	sudo dfu-util -d 1d50:6146 -a 0 -D $< -R
-else
-	sudo dfu-util -d 1d50:6146 -S $(DFU_SERIAL)  -a 0 -D $< -R
-endif
+	@echo 'Executing dfu-util as root!!!'
+	sudo dfu-util -d 1d50:6146 $(if $(DFU_SERIAL),-S $(DFU_SERIAL)) -a 0 -D $< -R
 
 clean:
 	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
