@@ -187,9 +187,9 @@ vga_core u_vga_core
 
 assign vga_ck = clk_40m_tree;
 
-// 3b for single-PMOD
+// 4b for single-PMOD
 assign {P1A1,   P1A2,   P1A3,   P1A4,   P1A7,   P1A8,   P1A9,   P1A10} =
-       {g[7],   vga_ck, vga_hs, 1'b0,   r[7],   b[7],   vga_de, vga_vs};
+       {|g[7:6],   vga_ck, vga_hs, |{&r[7:6],&g[7:6],&b[7:6]},   |r[7:6],   |b[7:6],   vga_de, vga_vs};
 
 
 // 12b for dual-PMOD
