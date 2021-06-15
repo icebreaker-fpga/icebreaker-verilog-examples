@@ -1,4 +1,4 @@
-PROJ = dvi-3bit
+PROJ = dvi-4bit
 ADD_SRC = vga_core.v vga_timing.v
 
 PIN_DEF = ../icebreaker.pcf
