@@ -202,8 +202,8 @@ always @ ( posedge clk_dot ) begin : proc_ball
     end
 
     // Bounding box -8 to 7 around each axis
-    ball_x_match <= {3{ball_x_diff[11]}} == ball_x_diff[2:0];
-    ball_y_match <= {3{ball_y_diff[11]}} == ball_y_diff[2:0];
+    ball_x_match <= {8{ball_x_diff[11]}} == ball_x_diff[10:3];
+    ball_y_match <= {8{ball_y_diff[11]}} == ball_y_diff[10:3];
   end
  end // clk+reset
 end // proc_ball

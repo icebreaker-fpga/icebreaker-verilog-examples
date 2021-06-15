@@ -4,6 +4,7 @@ ADD_SRC = vga_core.v vga_timing.v
 PIN_DEF = ../icebreaker.pcf
 DEVICE = up5k
 PACKAGE = sg48
+PNR_SEED = 1
 
 prog: iceprog
 
