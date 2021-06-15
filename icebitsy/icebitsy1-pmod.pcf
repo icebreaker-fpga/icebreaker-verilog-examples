@@ -3,6 +3,7 @@
 
 # 12 MHz clock
 set_io -nowarn CLK        35
+set_frequency CLK 12
 
 # USB
 set_io -nowarn USB_P      42
