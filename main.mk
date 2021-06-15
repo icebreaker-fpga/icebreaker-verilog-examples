@@ -5,7 +5,12 @@ all: $(PROJ).bin
 	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
 
 %.asc: $(PIN_DEF) %.json
-	nextpnr-ice40 --$(DEVICE) $(if $(PACKAGE),--package $(PACKAGE)) --json $(filter-out $<,$^) --pcf $< --asc $@
+	nextpnr-ice40 --$(DEVICE) \
+	$(if $(PACKAGE),--package $(PACKAGE)) \
+	--json $(filter-out $<,$^) \
+	--pcf $< \
+	--asc $@ \
+	$(if $(PNR_SEED),--seed $(PNR_SEED))
 
 %.bin: %.asc
 	icepack $< $@
