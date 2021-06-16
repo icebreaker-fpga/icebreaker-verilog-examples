@@ -229,11 +229,11 @@ SB_IO #(
                  P2_7,   P2_8,   P2_9,   P2_10}),
   .D_OUT_0     ({r[7],   r[5],   r[3],   r[1],
                  r[6],   r[4],   r[2],   r[0],
-                 g[7],   g[5],   1'b0,   vga_hs,
+                 g[7],   g[5],   1'b1,   vga_hs,
                  g[6],   g[4],   vga_de, vga_vs}),
   .D_OUT_1     ({g[3],   g[1],   b[7],   b[5],
                  g[2],   g[0],   b[6],   b[4],
-                 b[3],   b[1],   1'b1,   vga_hs,
+                 b[3],   b[1],   1'b0,   vga_hs,
                  b[2],   b[0],   vga_de, vga_vs}),
   .OUTPUT_CLK  (clk_40m_tree)
 );
