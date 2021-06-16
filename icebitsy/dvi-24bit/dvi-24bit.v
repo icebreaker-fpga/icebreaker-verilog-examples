@@ -222,29 +222,19 @@ vga_core u_vga_core
 
 SB_IO #(
   .PIN_TYPE(6'b01_0000)  // PIN_OUTPUT_DDR
-) dvi_ddr_iob [12:0](
+) dvi_ddr_iob [15:0](
   .PACKAGE_PIN ({P1_1,   P1_2,   P1_3,   P1_4,
                  P1_7,   P1_8,   P1_9,   P1_10,
-                 P2_1,   P2_2,   P2_3,
-                 P2_7,   P2_8}),
-  .D_OUT_0     ({g[3],   g[1],   b[7],   b[5],
-                 g[2],   g[0],   b[6],   b[4],
-                 b[3],   b[1],   1'b0,
-                 b[2],   b[0]}),
-  .D_OUT_1     ({r[7],   r[5],   r[3],   r[1],
+                 P2_1,   P2_2,   P2_3,   P2_4,
+                 P2_7,   P2_8,   P2_9,   P2_10}),
+  .D_OUT_0     ({r[7],   r[5],   r[3],   r[1],
                  r[6],   r[4],   r[2],   r[0],
-                 g[7],   g[5],   1'b1,
-                 g[6],   g[4]}),
-  .OUTPUT_CLK  (clk_40m_tree)
-);
-
-SB_IO #(
-  .PIN_TYPE(6'b01_0100)  // PIN_OUTPUT_REGISTERED
-) dvi_data_iob [2:0] (
-  .PACKAGE_PIN ({                        P2_4,
-                                 P2_9,   P2_10}),
-  .D_OUT_0     ({                        vga_hs,
-                                 vga_de, vga_vs}),
+                 g[7],   g[5],   1'b0,   vga_hs,
+                 g[6],   g[4],   vga_de, vga_vs}),
+  .D_OUT_1     ({g[3],   g[1],   b[7],   b[5],
+                 g[2],   g[0],   b[6],   b[4],
+                 b[3],   b[1],   1'b1,   vga_hs,
+                 b[2],   b[0],   vga_de, vga_vs}),
   .OUTPUT_CLK  (clk_40m_tree)
 );
 
