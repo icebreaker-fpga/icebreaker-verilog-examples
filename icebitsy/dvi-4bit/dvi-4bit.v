@@ -191,29 +191,28 @@ vga_core u_vga_core
 
 
 // ----------------------------------------------------------------------------
-// Assign the PMOD(s) for either 3b or 12b HDMI Module from Black Mesa Labs
-// DDR Flop to Mirror pixel clock to TFP410 
+// Assign the PMOD(s) pins
 // ----------------------------------------------------------------------------
-//FDDRCPE u1_FDDRCPE
-//(
-//  .C0  ( clk_40m_tree   ), .C1  ( ~ clk_40m_tree   ),
-//  .CE  ( 1'b1           ),
-//  .CLR ( 1'b0           ), .PRE ( 1'b0      ),
-//  .D0  ( 1'b1           ), .D1  ( 1'b0      ),
-//  .Q   ( vga_ck         ) 
-//);
+// Also add IO registers to minimize timing between lines and ensure we're
+// properly aligned to the clock. Clock is output using a DDR flop and 180deg
+// out of phase (rising edge in middle of data eye) to maximize setup/hold
+// time margin.
 
-assign vga_ck = clk_40m_tree;
+SB_IO #(
+  .PIN_TYPE(6'b01_0000)  // PIN_OUTPUT_DDR
+) dvi_clk_iob (
+  .PACKAGE_PIN (P1_2),
+  .D_OUT_0     (1'b0),
+  .D_OUT_1     (1'b1),
+  .OUTPUT_CLK  (clk_40m_tree)
+);
 
-// 4b for single-PMOD
-assign {P1_1,   P1_2,   P1_3,   P1_4,   P1_7,   P1_8,   P1_9,   P1_10} =
-       {|g[7:6],   vga_ck, vga_hs, |{&r[7:6],&g[7:6],&b[7:6]},   |r[7:6],   |b[7:6],   vga_de, vga_vs};
-
-
-// 12b for dual-PMOD
-//assign {P1A1,   P1A2,   P1A3,   P1A4,   P1A7,   P1A8,   P1A9,   P1A10} =
-//       {r[7],   r[5],   g[7],   g[5],   r[6],   r[4],   g[6],   g[4]};
-//assign {P1B1,   P1B2,   P1B3,   P1B4,   P1B7,   P1B8,   P1B9,   P1B10} =
-//       {b[7],   vga_ck, b[4],   vga_hs, b[6],   b[5],   vga_de, vga_vs};
+SB_IO #(
+  .PIN_TYPE(6'b01_0100)  // PIN_OUTPUT_REGISTERED
+) dvi_data_iob [6:0] (
+  .PACKAGE_PIN ({P1_1,           P1_3,   P1_4,                       P1_7,    P1_8,    P1_9,   P1_10}),
+  .D_OUT_0     ({|g[7:6],        vga_hs, |{&r[7:6],&g[7:6],&b[7:6]}, |r[7:6], |b[7:6], vga_de, vga_vs}),
+  .OUTPUT_CLK  (clk_40m_tree)
+);
 
 endmodule // top.v
