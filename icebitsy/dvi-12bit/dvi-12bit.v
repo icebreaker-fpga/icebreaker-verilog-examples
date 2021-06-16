@@ -82,7 +82,7 @@ module top
   wire [7:0]    g;
   wire [7:0]    b;
   reg           mode_bit;
-  wire          ok_led_loc;
+  reg           ok_led_loc;
 
 
   //assign reset_loc  = ~BTN_N;
