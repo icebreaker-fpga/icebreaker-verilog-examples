@@ -207,7 +207,7 @@ SB_IO #(
 );
 
 SB_IO #(
-  .PIN_TYPE(6'b010100)  // PIN_OUTPUT_REGISTERED
+  .PIN_TYPE(6'b01_0100)  // PIN_OUTPUT_REGISTERED
 ) dvi_data_iob [14:0] (
   .PACKAGE_PIN ({P1_1,   P1_2,   P1_3,   P1_4,   P1_7,   P1_8,   P1_9,   P1_10,
                  P2_1,           P2_3,   P2_4,   P2_7,   P2_8,   P2_9,   P2_10}),
