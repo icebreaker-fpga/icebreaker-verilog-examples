@@ -30,6 +30,7 @@
 `default_nettype none
 
 module dfu_helper #(
+	parameter integer DUMMY_USB = 1,		// Include dummy USB IOs to avoid false detection
 	parameter integer SAMP_TW = 7,			// Sample button every 128 cycles
 	parameter integer LONG_TW = 17,			// Consider long press after 2^19 sampling
 	parameter integer BTN_MODE = 3,			// [2] Use btn_tick, [1] Include IO buffer, [0] Invert (active-low)
@@ -37,6 +38,11 @@ module dfu_helper #(
 	parameter BOOT_IMAGE = 2'b01,			// Bootloader image
 	parameter USER_IMAGE = 2'b10			// User image
 )(
+	// USB IOs
+	inout  wire usb_dp,
+	inout  wire usb_dn,
+	inout  wire usb_pu,
+
 	// External control
 	input  wire [1:0] boot_sel,
 	input  wire boot_now,
@@ -81,6 +87,21 @@ module dfu_helper #(
 	reg [1:0] wb_sel;
 	reg wb_req;
 	reg wb_now;
+
+
+	// Dummy USB
+	// ---------
+
+	if (DUMMY_USB)
+		SB_IO #(
+			.PIN_TYPE    (6'b10_1000),
+			.PULLUP      (1'b0),
+			.IO_STANDARD ("SB_LVCMOS")
+		) usb[2:0] (
+			.PACKAGE_PIN   ({usb_dp, usb_dn, usb_pu}),
+			.OUTPUT_ENABLE (1'b0),
+			.D_OUT_0       (1'b0)
+		);
 
 
 	// Button

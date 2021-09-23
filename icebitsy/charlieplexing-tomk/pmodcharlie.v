@@ -1,8 +1,12 @@
 `timescale 1ns / 1ps
 
 module top(
-    input CLK,
-	  input BTN_N,
+    inout  USB_P,
+    inout  USB_N,
+    inout  USB_DET,
+
+    input  CLK,
+    input  BTN_N,
     output LEDG_N,
     output P1_1, P1_2, P1_3, P1_4, P1_7, P1_8, P1_9, P1_10
   );
@@ -19,6 +23,9 @@ module top(
 	dfu_helper #(
 		.BTN_MODE(3)
 	) dfu_helper_I (
+		.usb_dp   (USB_P),
+		.usb_dn   (USB_N),
+		.usb_pu   (USB_DET),
 		.boot_sel (2'b00),
 		.boot_now (1'b0),
 		.btn_in   (BTN_N),

@@ -58,6 +58,10 @@
                                                                                 
 module top
 (
+  inout  USB_P,
+  inout  USB_N,
+  inout  USB_DET,
+
   input  CLK,
   output LEDG_N, // on board green
   input BTN_N, // user button aka reset
@@ -93,6 +97,9 @@ dfu_helper #(
   .LONG_TW(19),
 	.BTN_MODE(3)
 ) dfu_helper_I (
+	.usb_dp   (USB_P),
+	.usb_dn   (USB_N),
+	.usb_pu   (USB_DET),
 	.boot_sel (2'b00),
 	.boot_now (1'b0),
 	.btn_in   (BTN_N),

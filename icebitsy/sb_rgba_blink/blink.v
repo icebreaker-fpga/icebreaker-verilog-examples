@@ -11,8 +11,11 @@
 `default_nettype none
 
 module top (
+	inout  wire USB_P,
+	inout  wire USB_N,
+	inout  wire USB_DET,
 	output wire [2:0] LED_RGB,
-	input wire BTN_N,
+	input  wire BTN_N,
 	output wire LEDG_N,
 );
 
@@ -34,6 +37,9 @@ module top (
 		.BTN_MODE(3),
 		.LONG_TW(19)
 	) dfu_helper_I (
+		.usb_dp   (USB_P),
+		.usb_dn   (USB_N),
+		.usb_pu   (USB_DET),
 		.boot_sel (2'b00),
 		.boot_now (1'b0),
 		.btn_in   (BTN_N),
